@@ -107,6 +107,57 @@ namespace RawLambCommon
             return lp;
         }
 
+        public static byte[] SerializeMany(IEnumerable<LamellaPlacement> lps)
+        {
+            var Nbytes = 0;
+            var datas = new List<byte[]>();
+            foreach (var lp in lps)
+            {
+                Nbytes += sizeof(int);
+                var lpdata = lp.Serialize();
+                Nbytes += lpdata.Length;
+
+                datas.Add(lpdata);
+            }
+
+            var data = new byte[Nbytes];
+
+            int index = 0;
+            Buffer.BlockCopy(BitConverter.GetBytes(Nbytes), 0, data, index, sizeof(int));
+            index += sizeof(int);
+
+            foreach (var lpdata in datas)
+            {
+                Buffer.BlockCopy(lpdata, 0, data, index, lpdata.Length);
+                index += lpdata.Length;
+            }
+
+            return data;
+        }
+
+        public static List<LamellaPlacement> DeserializeMany(byte[] data)
+        {
+            var lps = new List<LamellaPlacement>();
+
+            int index = 0;
+            var N = BitConverter.ToInt32(data, index);
+
+            for (int i = 0; i < N; ++i)
+            {
+                var lpLength = BitConverter.ToInt32(data, index);
+                index += sizeof(int);
+
+                var lpdata = new byte[lpLength];
+                Buffer.BlockCopy(data, index, lpdata, 0, lpLength);
+
+                var lp = LamellaPlacement.Deserialize(lpdata);
+
+                lps.Add(lp);
+            }
+
+            return lps;
+        }
+
         public override string ToString()
         {
             return string.Format("LamellaPlacement({0} {1} {2} {3})", LogIndex, BoardIndex, Placed, Plane);
