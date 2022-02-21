@@ -33,6 +33,14 @@
 
 # VS folder
 .vs/
+*.user
 
 # NuGet packages
 packages/
+
+# obj files
+bin/
+obj/
+RawLam/bin/
+RawLam/obj/
+RawLamWrapper/x64/

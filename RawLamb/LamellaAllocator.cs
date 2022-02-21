@@ -222,7 +222,9 @@ namespace RawLambCommon
 
 
 
-
+    /// <summary>
+    /// Class to define board placement.
+    /// </summary>
     public class BoardPlacement
     {
         public BoardPlacement(Polyline poly)
