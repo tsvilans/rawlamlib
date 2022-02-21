@@ -256,6 +256,5 @@ namespace RawLambCommon
         public double MinY;
 
         public int FalseTries = 0;
-
     }
 }
