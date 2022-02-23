@@ -6,14 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RawLamAPI", "RawLamWrapper\RawLamWrapper.vcxproj", "{9E52B1FA-DD78-4F63-97F3-B5873AE151CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawLamNet", "RawLamNet\RawLamNet.csproj", "{70A45ECC-931D-4FEE-833F-442EF9CB54A8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9E52B1FA-DD78-4F63-97F3-B5873AE151CB} = {9E52B1FA-DD78-4F63-97F3-B5873AE151CB}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawLam", "RawLamb\RawLam.csproj", "{8B62411C-EBCE-40FC-A1E7-6B5C085B1582}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9E52B1FA-DD78-4F63-97F3-B5873AE151CB} = {9E52B1FA-DD78-4F63-97F3-B5873AE151CB}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
