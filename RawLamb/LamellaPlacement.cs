@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Rhino.Geometry;
+using System.Xml;
 
 namespace RawLambCommon
 {
@@ -162,6 +163,35 @@ namespace RawLambCommon
         {
             return string.Format("LamellaPlacement({0} {1} {2} {3})", LogIndex, BoardIndex, Placed, Plane);
         }
-    }
 
+        
+         public XmlElement ToXml(XmlDocument doc)
+        { 
+            var main = doc.CreateElement("lamella_placement");
+
+            var logindex = doc.CreateElement("log_index");
+            logindex.InnerText = this.LogIndex.ToString();
+            main.AppendChild(logindex);
+
+            var boardindex = doc.CreateElement("board_index");
+            boardindex.InnerText = this.BoardIndex.ToString();
+            main.AppendChild(boardindex);
+
+            var plane = doc.CreateElement("plane");
+
+            var origin = doc.CreateElement("origin");
+            origin.InnerText = this.Plane.Origin.ToString();
+            var xaxis = doc.CreateElement("xaxis");
+            xaxis.InnerText = this.Plane.XAxis.ToString();
+            var yaxis = doc.CreateElement("yaxis");
+            yaxis.InnerText = this.Plane.YAxis.ToString();
+
+            plane.AppendChild(origin);
+            plane.AppendChild(xaxis);
+            plane.AppendChild(yaxis);
+            main.AppendChild(plane);
+                
+            return main;
+        }
+    }
 }
