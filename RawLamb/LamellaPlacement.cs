@@ -184,7 +184,6 @@ namespace RawLambCommon
             var xaxis = doc.CreateElement("xaxis");
             xaxis.InnerText = string.Format("{0} {1} {2}", Plane.XAxis.X, Plane.XAxis.Y, Plane.XAxis.Z);
             var yaxis = doc.CreateElement("yaxis");
-            yaxis.InnerText = this.Plane.YAxis.ToString();
             yaxis.InnerText = string.Format("{0} {1} {2}", Plane.YAxis.X, Plane.YAxis.Y, Plane.YAxis.Z);
 
             plane.AppendChild(origin);
