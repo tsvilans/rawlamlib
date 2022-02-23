@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="LamellaPerformance.cs" />
     <Compile Include="LamellaPlacement.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="LamellaAllocator.cs" />
