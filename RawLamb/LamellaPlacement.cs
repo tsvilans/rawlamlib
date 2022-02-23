@@ -170,21 +170,22 @@ namespace RawLambCommon
             var main = doc.CreateElement("lamella_placement");
 
             var logindex = doc.CreateElement("log_index");
-            logindex.InnerText = this.LogIndex.ToString();
+            logindex.InnerText = string.Format("{0}", LogIndex);
             main.AppendChild(logindex);
 
             var boardindex = doc.CreateElement("board_index");
-            boardindex.InnerText = this.BoardIndex.ToString();
+            boardindex.InnerText = string.Format("{0}", BoardIndex);
             main.AppendChild(boardindex);
 
             var plane = doc.CreateElement("plane");
 
             var origin = doc.CreateElement("origin");
-            origin.InnerText = this.Plane.Origin.ToString();
+            origin.InnerText = string.Format("{0} {1} {2}", Plane.Origin.X, Plane.Origin.Y, Plane.Origin.Z);
             var xaxis = doc.CreateElement("xaxis");
-            xaxis.InnerText = this.Plane.XAxis.ToString();
+            xaxis.InnerText = string.Format("{0} {1} {2}", Plane.XAxis.X, Plane.XAxis.Y, Plane.XAxis.Z);
             var yaxis = doc.CreateElement("yaxis");
             yaxis.InnerText = this.Plane.YAxis.ToString();
+            yaxis.InnerText = string.Format("{0} {1} {2}", Plane.YAxis.X, Plane.YAxis.Y, Plane.YAxis.Z);
 
             plane.AppendChild(origin);
             plane.AppendChild(xaxis);
