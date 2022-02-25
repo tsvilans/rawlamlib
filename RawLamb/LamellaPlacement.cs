@@ -11,20 +11,34 @@ namespace RawLambCommon
 {
     public class LamellaPlacement
     {
-        public int LogIndex = -1;
-        public int BoardIndex = -1;
+        public int LogIndex;
+        public int BoardIndex;
         public bool Placed = false;
         public Plane Plane;
+        public string Name;
 
-        public LamellaPlacement()
+        public LamellaPlacement(string name="LamellaPlacement", int logIndex=-1, int boardIndex=-1)
         {
             Plane = Plane.Unset;
+            Name = name;
+            LogIndex = logIndex;
+            BoardIndex = boardIndex;
         }
+
+
         public byte[] Serialize()
         {
-            byte[] data = new byte[sizeof(int) * 2 + sizeof(bool) + sizeof(double) * 9];
+
+            byte[] data = new byte[sizeof(int) + Name.Length + sizeof(int) * 2 + sizeof(bool) + sizeof(double) * 9];
 
             var index = 0;
+
+            Array.Copy(BitConverter.GetBytes(Name.Length), 0, data, index, sizeof(int));
+            index += sizeof(int);
+
+            Array.Copy(Encoding.UTF8.GetBytes(Name), 0, data, index, Name.Length);
+            index += Name.Length;
+
             Array.Copy(BitConverter.GetBytes(LogIndex), 0, data, index, sizeof(int));
             index += sizeof(int);
 
@@ -60,21 +74,22 @@ namespace RawLambCommon
 
         public static LamellaPlacement Deserialize(byte[] data)
         {
-            var lp = new LamellaPlacement();
-
             var indexStep = 0;
 
-
-            var LI = BitConverter.ToInt32(data, indexStep);
+            var nLength = BitConverter.ToInt32(data, indexStep);
             indexStep += sizeof(int);
 
-            var BI = BitConverter.ToInt32(data, indexStep);
+            var name = Encoding.UTF8.GetString(data, indexStep, nLength);
+            indexStep += nLength;
+
+            var log_index = BitConverter.ToInt32(data, indexStep);
             indexStep += sizeof(int);
 
-            var P = BitConverter.ToBoolean(data, indexStep);
+            var board_index = BitConverter.ToInt32(data, indexStep);
+            indexStep += sizeof(int);
+
+            var placed = BitConverter.ToBoolean(data, indexStep);
             indexStep += sizeof(bool);
-
-
 
             Point3d PtO = new Point3d(
               BitConverter.ToDouble(data, indexStep),
@@ -96,13 +111,12 @@ namespace RawLambCommon
               BitConverter.ToDouble(data, indexStep) + (sizeof(double) * 2)
               );
 
-            indexStep += (sizeof(double) * 3);
+
+            var lp = new LamellaPlacement(name, log_index, board_index);
 
             Plane Pl = new Plane(PtO, Vx, Vy);
-            // TO DO
-            lp.LogIndex = LI;
-            lp.BoardIndex = BI;
-            lp.Placed = P;
+
+            lp.Placed = placed;
             lp.Plane = Pl;
 
             return lp;
@@ -161,13 +175,17 @@ namespace RawLambCommon
 
         public override string ToString()
         {
-            return string.Format("LamellaPlacement({0} {1} {2} {3})", LogIndex, BoardIndex, Placed, Plane);
+            return string.Format("LamellaPlacement({0} {1} {2} {3})", Name, LogIndex, BoardIndex, Placed);
         }
 
         
          public XmlElement ToXml(XmlDocument doc)
         { 
             var main = doc.CreateElement("lamella_placement");
+
+            var name = doc.CreateElement("name");
+            name.InnerText = Name;
+            main.AppendChild(name);
 
             var logindex = doc.CreateElement("log_index");
             logindex.InnerText = string.Format("{0}", LogIndex);
