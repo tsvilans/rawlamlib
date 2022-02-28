@@ -222,7 +222,7 @@ namespace RawLambCommon
             return lp;
         }
 
-        public List<LamellaPlacement> FromXml(List<XmlElement> elements)
+        public static List<LamellaPlacement> FromXml(List<XmlElement> elements)
         {
             var lps = new List<LamellaPlacement>();
             for (int i = 0; i < elements.Count; i++)
