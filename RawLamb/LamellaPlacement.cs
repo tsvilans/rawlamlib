@@ -25,12 +25,9 @@ namespace RawLambCommon
             BoardIndex = boardIndex;
         }
 
-
         public byte[] Serialize()
         {
-
             byte[] data = new byte[sizeof(int) + Name.Length + sizeof(int) * 2 + sizeof(bool) + sizeof(double) * 9];
-
             var index = 0;
 
             Array.Copy(BitConverter.GetBytes(Name.Length), 0, data, index, sizeof(int));
@@ -111,14 +108,10 @@ namespace RawLambCommon
               BitConverter.ToDouble(data, indexStep) + (sizeof(double) * 2)
               );
 
-
             var lp = new LamellaPlacement(name, log_index, board_index);
-
             Plane Pl = new Plane(PtO, Vx, Vy);
-
             lp.Placed = placed;
             lp.Plane = Pl;
-
             return lp;
         }
 
@@ -131,12 +124,10 @@ namespace RawLambCommon
                 Nbytes += sizeof(int);
                 var lpdata = lp.Serialize();
                 Nbytes += lpdata.Length;
-
                 datas.Add(lpdata);
             }
 
             var data = new byte[Nbytes];
-
             int index = 0;
             Buffer.BlockCopy(BitConverter.GetBytes(Nbytes), 0, data, index, sizeof(int));
             index += sizeof(int);
@@ -146,14 +137,12 @@ namespace RawLambCommon
                 Buffer.BlockCopy(lpdata, 0, data, index, lpdata.Length);
                 index += lpdata.Length;
             }
-
             return data;
         }
 
         public static List<LamellaPlacement> DeserializeMany(byte[] data)
         {
             var lps = new List<LamellaPlacement>();
-
             int index = 0;
             var N = BitConverter.ToInt32(data, index);
 
@@ -166,10 +155,8 @@ namespace RawLambCommon
                 Buffer.BlockCopy(data, index, lpdata, 0, lpLength);
 
                 var lp = LamellaPlacement.Deserialize(lpdata);
-
                 lps.Add(lp);
             }
-
             return lps;
         }
 
@@ -177,7 +164,6 @@ namespace RawLambCommon
         {
             return string.Format("LamellaPlacement({0} {1} {2} {3})", Name, LogIndex, BoardIndex, Placed);
         }
-
 
         public XmlElement ToXml(XmlDocument doc)
         {
@@ -196,7 +182,6 @@ namespace RawLambCommon
             main.AppendChild(boardindex);
 
             var plane = doc.CreateElement("plane");
-
             var origin = doc.CreateElement("origin");
             origin.InnerText = string.Format("{0} {1} {2}", Plane.Origin.X, Plane.Origin.Y, Plane.Origin.Z);
             var xaxis = doc.CreateElement("xaxis");
@@ -212,16 +197,11 @@ namespace RawLambCommon
             return main;
         }
 
-        public LamellaPlacement FromXml(XmlElement element)
+        public static LamellaPlacement FromXml(XmlElement element)
         {
             var name = element.SelectSingleNode("name").InnerText;
-
-
             var logIndex = int.Parse(element.SelectSingleNode("log_index").InnerText);
-
-
             var boardIndex = int.Parse(element.SelectSingleNode("board_index").InnerText);
-
 
             var plane = element.SelectSingleNode("plane");
             var originOut = plane.SelectSingleNode("origin");
@@ -235,21 +215,16 @@ namespace RawLambCommon
             Point3d plOrigin = new Point3d(double.Parse(originO[0]), double.Parse(originO[1]), double.Parse(originO[2]));
             Vector3d VecX = new Vector3d(double.Parse(xAxisO[0]), double.Parse(xAxisO[1]), double.Parse(xAxisO[2]));
             Vector3d VecY = new Vector3d(double.Parse(yAxisO[0]), double.Parse(yAxisO[1]), double.Parse(yAxisO[2]));
-
             Plane pOut = new Plane(plOrigin, VecX, VecY);
-
 
             var lp = new LamellaPlacement(name, logIndex, boardIndex);
             lp.Plane = pOut;
-
             return lp;
         }
-
 
         public List<LamellaPlacement> FromXml(List<XmlElement> elements)
         {
             var lps = new List<LamellaPlacement>();
-
             for (int i = 0; i < elements.Count; i++)
             {
                 var lp = FromXml(elements[i]);
