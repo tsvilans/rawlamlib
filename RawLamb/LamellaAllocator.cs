@@ -156,8 +156,8 @@ namespace RawLambCommon
                         lps[i].Placed = true;
                         lps[i].BoardIndex = index;
                         lps[i].LogIndex = BoardLogIndices[index];
-                        lps[i].Name = String.Format("{0}{1}", Lamellas[i], "_" + i);
-
+                        lps[i].Name = String.Format("{0}{1}",Lamellas[i],"_" + i);
+                         
                         var mesh = Lamellas[i].Mesh.DuplicateMesh();
                         mesh.Transform(Transform.PlaneToPlane(new Plane(Point3d.Origin, Vector3d.XAxis, Vector3d.ZAxis), plane));
 
