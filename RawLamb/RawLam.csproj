@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClipperTools">
-      <HintPath>D:\OneDrive - Det Kongelige Akademi\Umea02\Development\bin\ClipperTools.dll</HintPath>
+      <HintPath>..\3rd_party\ClipperTools.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto, Version=2.5.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">

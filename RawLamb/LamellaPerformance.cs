@@ -147,8 +147,9 @@ namespace RawLamb
         }
         public static byte[] SerializeMany(IEnumerable<LamellaPerformance> lps)
         {
-            var Nbytes = 0;
+            int Nbytes = sizeof(int);
             var datas = new List<byte[]>();
+
             foreach (var lp in lps)
             {
                 Nbytes += sizeof(int);
@@ -166,6 +167,8 @@ namespace RawLamb
 
             foreach (var lpdata in datas)
             {
+                Buffer.BlockCopy(BitConverter.GetBytes((int)lpdata.Length), 0, data, index, sizeof(int));
+                index += sizeof(int);
                 Buffer.BlockCopy(lpdata, 0, data, index, lpdata.Length);
                 index += lpdata.Length;
             }
@@ -179,10 +182,13 @@ namespace RawLamb
 
             int index = 0;
             var N = BitConverter.ToInt32(data, index);
+            index += sizeof(int);
 
-            for (int i = 0; i < N; ++i)
+            while (index < N && index < data.Length)
             {
                 var lpLength = BitConverter.ToInt32(data, index);
+                if (lpLength <= 0) break;
+
                 index += sizeof(int);
 
                 var lpdata = new byte[lpLength];
@@ -191,6 +197,7 @@ namespace RawLamb
                 var lp = LamellaPerformance.Deserialize(lpdata);
 
                 lps.Add(lp);
+                index += lpLength;
             }
 
             return lps;
