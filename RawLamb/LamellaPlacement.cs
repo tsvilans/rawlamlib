@@ -232,5 +232,19 @@ namespace RawLambCommon
             }
             return lps;
         }
+
+        public static List<LamellaPlacement> FromXml(XmlNodeList elements)
+        {
+            var lps = new List<LamellaPlacement>();
+            for (int i = 0; i < elements.Count; i++)
+            {
+                if (elements[i] is XmlElement)
+                {
+                    var lp = LamellaPlacement.FromXml((XmlElement)elements[i]);
+                    lps.Add(lp);
+                }
+            }
+            return lps;
+        }
     }
 }
