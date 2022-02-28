@@ -17,7 +17,7 @@ namespace RawLambCommon
         public Plane Plane;
         public string Name;
 
-        public LamellaPlacement(string name="LamellaPlacement", int logIndex=-1, int boardIndex=-1)
+        public LamellaPlacement(string name = "LamellaPlacement", int logIndex = -1, int boardIndex = -1)
         {
             Plane = Plane.Unset;
             Name = name;
@@ -178,9 +178,9 @@ namespace RawLambCommon
             return string.Format("LamellaPlacement({0} {1} {2} {3})", Name, LogIndex, BoardIndex, Placed);
         }
 
-        
-         public XmlElement ToXml(XmlDocument doc)
-        { 
+
+        public XmlElement ToXml(XmlDocument doc)
+        {
             var main = doc.CreateElement("lamella_placement");
 
             var name = doc.CreateElement("name");
@@ -208,8 +208,54 @@ namespace RawLambCommon
             plane.AppendChild(xaxis);
             plane.AppendChild(yaxis);
             main.AppendChild(plane);
-                
+
             return main;
+        }
+
+        public LamellaPlacement FromXml(XmlElement element)
+        {
+            var name = element.SelectSingleNode("name").InnerText;
+
+
+            var logIndex = int.Parse(element.SelectSingleNode("log_index").InnerText);
+
+
+            var boardIndex = int.Parse(element.SelectSingleNode("board_index").InnerText);
+
+
+            var plane = element.SelectSingleNode("plane");
+            var originOut = plane.SelectSingleNode("origin");
+            var xAxisOut = plane.SelectSingleNode("xaxis");
+            var yAxisOut = plane.SelectSingleNode("yaxis");
+
+            var originO = originOut.InnerText.Split();
+            var xAxisO = xAxisOut.InnerText.Split();
+            var yAxisO = yAxisOut.InnerText.Split();
+
+            Point3d plOrigin = new Point3d(double.Parse(originO[0]), double.Parse(originO[1]), double.Parse(originO[2]));
+            Vector3d VecX = new Vector3d(double.Parse(xAxisO[0]), double.Parse(xAxisO[1]), double.Parse(xAxisO[2]));
+            Vector3d VecY = new Vector3d(double.Parse(yAxisO[0]), double.Parse(yAxisO[1]), double.Parse(yAxisO[2]));
+
+            Plane pOut = new Plane(plOrigin, VecX, VecY);
+
+
+            var lp = new LamellaPlacement(name, logIndex, boardIndex);
+            lp.Plane = pOut;
+
+            return lp;
+        }
+
+
+        public List<LamellaPlacement> FromXml(List<XmlElement> elements)
+        {
+            var lps = new List<LamellaPlacement>();
+
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var lp = FromXml(elements[i]);
+                lps.Add((lp));
+            }
+            return lps;
         }
     }
 }
