@@ -186,6 +186,12 @@
 		new_log->m_grid = target;
 
 		return new_log;
+
+		/*
+		openvdb::FloatGrid::Ptr dest = openvdb::FloatGrid::create();
+		dest->setTransform( openvdb::math::Transform::createLinearTransform( 2.0f ) ); // org voxel size is 1.0f
+		openvdb::tools::resampleToMatch<openvdb::tools::BoxSampler>( *org, *dest );
+		*/
 	}
 
 
