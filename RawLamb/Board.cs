@@ -20,6 +20,8 @@ namespace RawLambCommon
         public Polyline Centre;
         public List<Polyline> Bottom;
         public Plane Plane;
+        public Plane TopPlane;
+        public Plane BottomPlane;
         public double Thickness;
 
         public Board(string name = "Board") : this(null, name)

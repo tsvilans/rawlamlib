@@ -44,4 +44,5 @@ obj/
 RawLam/bin/
 RawLam/obj/
 RawLamWrapper/x64/
+pyRawLam/x64/
 UpgradeLog.htm

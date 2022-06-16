@@ -42,7 +42,9 @@
 
 		std::vector<ValueT> values(coords.size());
 
-		if (sample_type == 1)
+		switch (sample_type)
+		{
+		case(1):
 		{
 			openvdb::tools::GridSampler<GridType::ConstAccessor, openvdb::tools::BoxSampler> sampler1(accessor, m_grid->transform());
 			for (int i = 0; i < coords.size(); ++i)
@@ -50,8 +52,9 @@
 				values[i] = sampler1.wsSample(
 					openvdb::Vec3R(coords[i].x(), coords[i].y(), coords[i].z()));
 			}
+			break;
 		}
-		else if (sample_type == 2)
+		case(2):
 		{
 			openvdb::tools::GridSampler<GridType::ConstAccessor, openvdb::tools::QuadraticSampler> sampler2(accessor, m_grid->transform());
 
@@ -60,8 +63,9 @@
 				values[i] = sampler2.wsSample(
 					openvdb::Vec3R(coords[i].x(), coords[i].y(), coords[i].z()));
 			}
+			break;
 		}
-		else
+		default:
 		{
 			openvdb::tools::GridSampler<GridType::ConstAccessor, openvdb::tools::PointSampler> sampler3(accessor, m_grid->transform());
 
@@ -70,8 +74,9 @@
 				values[i] = sampler3.wsSample(
 					openvdb::Vec3R(coords[i].x(), coords[i].y(), coords[i].z()));
 			}
+			break;
 		}
-
+		}
 		return values;
 	}
 
@@ -177,10 +182,12 @@
 		openvdb::tools::GridTransformer transformer(xform);
 
 		// Resample using triquadratic interpolation.
-		transformer.transformGrid<openvdb::tools::QuadraticSampler, GridType>(
-			*m_grid, *target);
+		//transformer.transformGrid<openvdb::tools::QuadraticSampler, GridType>(
+		//	*m_grid, *target);
 
-		target->tree().prune();
+		//target->tree().prune();
+
+		openvdb::tools::resampleToMatch<openvdb::tools::QuadraticSampler>(*m_grid, *target);
 
 		RawLam::CtLog* new_log = new RawLam::CtLog();
 		new_log->m_grid = target;
@@ -275,7 +282,7 @@ namespace RawLam
 		//std::copy(matd.data(), matd.data() + matd.size(), mat);
 	}
 
-	void CtLog_to_mesh(CtLog* ptr, QuadMesh* mesh_ptr, float isovalue)
+	void CtLog_to_mesh(CtLog* ptr, DeepSight::QuadMesh* mesh_ptr, float isovalue)
 	{
 		ptr->to_mesh(isovalue, *(mesh_ptr->vertices), *(mesh_ptr->faces));
 	}

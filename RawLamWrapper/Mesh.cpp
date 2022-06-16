@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-namespace RawLam
+namespace DeepSight
 {
 	QuadMesh::QuadMesh()
 	{

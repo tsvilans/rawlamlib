@@ -2,7 +2,7 @@
 #include <Eigen/Core>
 #include <vector>
 
-namespace RawLam
+namespace DeepSight
 {
 	class QuadMesh
 	{
@@ -23,7 +23,6 @@ namespace RawLam
 		RAWLAM_EXPORT int QuadMesh_num_faces(QuadMesh* ptr);
 		RAWLAM_EXPORT void QuadMesh_get_vertices(QuadMesh* ptr, float* data);
 		RAWLAM_EXPORT void QuadMesh_get_faces(QuadMesh* ptr, int* data);
-
 		
 #ifdef __cplusplus
 	}

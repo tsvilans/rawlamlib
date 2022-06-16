@@ -8,6 +8,7 @@
 #include <openvdb/tools/Filter.h>
 #include <openvdb/tools/VolumeToMesh.h>
 #include <openvdb/tools/GridTransformer.h>
+#include <openvdb/tools/Composite.h>
 
 #include "openvdb/Types.h"
 
@@ -58,7 +59,7 @@ namespace RawLam
 		RAWLAM_EXPORT void CtLog_bounding_box(CtLog* ptr, float* min, float* max);
 		RAWLAM_EXPORT void CtLog_set_transform(CtLog* ptr, float* mat);
 		RAWLAM_EXPORT void CtLog_get_transform(CtLog* ptr, float* mat);
-		RAWLAM_EXPORT void CtLog_to_mesh(CtLog* ptr, QuadMesh* mesh_ptr, float isovalue);
+		RAWLAM_EXPORT void CtLog_to_mesh(CtLog* ptr, DeepSight::QuadMesh* mesh_ptr, float isovalue);
 		RAWLAM_EXPORT CtLog* CtLog_resample(CtLog* ptr, float scale);
 		RAWLAM_EXPORT int CtLog_debug_grid_counter();
 
